@@ -1,3 +1,6 @@
 /* eslint-disable no-console */
-const greeting = 'Hello World!';
-console.log(greeting);
+import Rover from './Rover';
+
+const rover = new Rover();
+
+console.log('Rover current position:', rover.toString());
