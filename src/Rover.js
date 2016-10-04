@@ -54,7 +54,7 @@ class Rover {
     executeInstruction(instruction, commsLink, sensorWarning) {
         const {x, y, direction, history} = privateProps.get(this);
 
-        if(isFunction(sensorWarning) && sensorWarning()) {
+        if(isFunction(sensorWarning) && sensorWarning(this, instruction)) {
             return;
         }
 

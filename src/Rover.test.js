@@ -138,6 +138,14 @@ describe('Rover class', function() {
                 expect(rover.toString()).to.equal('-5 -4 N');
             });
 
+            it('it passes itself to the sensorWarning callback', function () {
+                const rover = new Rover(-5, -5);
+                const mockCommsLink = (passedRover) => {
+                    expect(passedRover).to.equal(rover);
+                };
+                rover.executeInstruction('F', mockCommsLink);
+            });
+
             it('it adds LOST to output if commsLink is down (returns false)', function () {
                 const rover = new Rover(-5, -5);
                 const mockCommsLink = () => false;
@@ -164,6 +172,15 @@ describe('Rover class', function() {
                 const mockSensorWarning = () => false;
                 rover.executeInstruction('F', null, mockSensorWarning);
                 expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it passes itself and the instruction to the sensorWarning callback', function () {
+                const rover = new Rover(-5, -5);
+                const mockSensorWarning = (passedRover, passedInstruction) => {
+                    expect(passedRover).to.equal(rover);
+                    expect(passedInstruction).to.equal('F');
+                };
+                rover.executeInstruction('F', null, mockSensorWarning);
             });
 
             it('it skips execution of instruction when there is a sensorWarning (returns true)', function () {
@@ -215,6 +232,14 @@ describe('Rover class', function() {
                 expect(rover.toString()).to.equal('-5 -4 N');
             });
 
+            it('it passes itself to the sensorWarning callback', function () {
+                const rover = new Rover(-5, -5);
+                const mockCommsLink = (passedRover) => {
+                    expect(passedRover).to.equal(rover);
+                };
+                rover.executeInstructions('FRL', mockCommsLink);
+            });
+
             it('it adds LOST to output if commsLink is down (returns false)', function () {
                 const rover = new Rover(0, 0);
                 const mockCommsLink = () => false;
@@ -241,6 +266,23 @@ describe('Rover class', function() {
                 const mockSensorWarning = () => false;
                 rover.executeInstructions('FRL', null, mockSensorWarning);
                 expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it passes itself and instruction to the sensorWarning callback', function () {
+                const rover = new Rover(-5, -5);
+                let i = 1;
+                const mockSensorWarning = (passedRover, passedInstruction) => {
+                    expect(passedRover).to.equal(rover);
+                    let expectedInstruction;
+                    switch(i) {
+                    case 1: expectedInstruction = 'F'; break;
+                    case 2: expectedInstruction = 'R'; break;
+                    case 3: expectedInstruction = 'L'; break;
+                    }
+                    expect(passedInstruction).to.equal(expectedInstruction);
+                    i++;
+                };
+                rover.executeInstructions('FRL', null, mockSensorWarning);
             });
 
             it('it skips execution of instructions when there is a sensorWarning (returns true)', function () {
