@@ -2,16 +2,53 @@
 
 A fun coding challenge
 
-To run the challenge perform the following commands
+The only requirement is having node ^4.3.0 with npm ^3.7.5 installed  
+To run the challenge perform the following commands.
+
 ```
 npm install
 npm start
 ```
 
-To run the tests 
+To run the mocha tests 
 ```
 npm test
 ```
+
+### Feedback
+I enjoyed this challenge. I spent about 4 hours of actual coding time, spread over the day (commute, lunch, evening)
+to get to this point, though I'd happily continue for longer. I didn't get to finish as much as I would have liked 
+but I prefer to do things right and not rush and end up with buggy untested code. 
+
+- I used a TDD approach and committed regularly each dealing with a single concern.
+- Linting and Tests must pass before committing and pushing is allowed.
+- I chose to write it in node since there was no requirement for a nice user interface and was instructed to keep
+it simple, so I focused on solving the core problem.
+- It has been written in a way that it
+can easily be extended/decorated with a nice user interface later.
+
+#### Tech stack
+- **engine:** node & npm
+- **build tools:** node scripts & git hooks
+- **language version:** es2015
+- **transpiler:** babel
+- **linting:** eslint
+- **test runner:** mocha
+- **assertion library:** chai
+
+### Todo
+- Create a missionControl module that handles parsing the mission from a text file, creating/linking
+the grid and rovers together then executing instructions
+- get index.js to use the missionControl module
+- use a build tool like webpack or gulp to create a prod build
+- add integration/acceptance BBD tests using cucumber.js -  e.g. something like this...
+    ```
+    Given a grid of "5" "3"
+    AND a rover named "rover1" starting at "1" "1" "E"
+    WHEN i execute Instructions "RFRFRFRF" for "rover1" 
+    THEN "rover1" should be at "1" "1" "E"
+    ```
+- add a client side user interface likely in React, where it can accept the Grid and Rovers as props then draw them.
 
 ### The Problem: Martian Robots
 
@@ -64,6 +101,7 @@ should be printed after the position and orientation.
 
 ### Sample Input
 
+```
 5 3  
 1 1 E  
 RFRFRFRF
@@ -73,9 +111,12 @@ FRRFLLFFRRFLL
 
 0 3 W  
 LLFFFLFLFL
+```
 
 ### Sample Output
 
+```
 1 1 E  
 3 3 N LOST  
 2 3 S
+```
