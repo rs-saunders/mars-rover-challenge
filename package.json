@@ -9,6 +9,10 @@
     "test": "mocha --compilers js:babel-core/register ./src/**/*.test.js",
     "lint": "eslint ./src"
   },
+  "engines": {
+    "node": "^4.3.0",
+    "npm": "^3.7.5"
+  },
   "config": {
     "ghooks": {
       "pre-commit": "npm run lint",
@@ -26,5 +30,13 @@
     "eslint": "^3.7.1",
     "ghooks": "^1.3.2",
     "mocha": "^3.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rs-saunders/mars-rover-challenge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rs-saunders/mars-rover-challenge/issues"
+  },
+  "homepage": "https://github.com/rs-saunders/mars-rover-challenge#readme"
 }
