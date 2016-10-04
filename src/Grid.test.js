@@ -81,4 +81,22 @@ describe('Grid class', function() {
             });
         });
     });
+
+    describe('detectScent', function() {
+
+        it('returns false if no scent is present', function() {
+            const grid = new Grid(5, 5);
+            const rover = new Rover(1, 1, 'N');
+            expect(grid.detectScent(rover, 'F')).to.be.false;
+        });
+
+        it('returns true if scent is present', function() {
+            const grid = new Grid(5, 5);
+            const rover = new Rover(5, 5, 'N');
+            const rover2 = new Rover(5, 5, 'N');
+            rover.executeInstruction('F', (rover) => !grid.isOffGrid(rover));
+            expect(grid.detectScent(rover2, 'F')).to.be.true;
+        });
+    });
+
 });

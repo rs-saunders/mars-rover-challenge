@@ -26,11 +26,18 @@ class Grid {
         const isOffGrid = (rover.x < 0 || rover.x > this.x || rover.y < 0 || rover.y > this.y);
 
         if(isOffGrid) {
+            const {scents} = privateProps.get(this);
             const lastInstruction = rover.history[0];
-            privateProps.get(this).scents.set(lastInstruction, true);
+            scents.set(lastInstruction, true);
         }
 
         return isOffGrid;
+    }
+
+    detectScent(rover, instruction) {
+        const {scents} = privateProps.get(this);
+        const scentKey = `${rover.toString()} ${instruction}`;
+        return scents.get(scentKey) || false;
     }
 }
 
