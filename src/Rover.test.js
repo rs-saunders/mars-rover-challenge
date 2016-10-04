@@ -131,11 +131,46 @@ describe('Rover class', function() {
                 expect(rover.toString()).to.equal('-5 -4 N');
             });
 
-            it('it adds LOST to output if commsLink returns false', function () {
+            it('it does nothing special if comsLink is active (returns true)', function () {
+                const rover = new Rover(-5, -5);
+                const mockCommsLink = () => true;
+                rover.executeInstruction('F', mockCommsLink);
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it adds LOST to output if commsLink is down (returns false)', function () {
                 const rover = new Rover(-5, -5);
                 const mockCommsLink = () => false;
                 rover.executeInstruction('F', mockCommsLink);
                 expect(rover.toString()).to.equal('-5 -4 N LOST');
+            });
+        });
+
+        describe('sensorWarning', function() {
+            it('it defaults to always false', function () {
+                const rover = new Rover(-5, -5);
+                rover.executeInstruction('F');
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it ignores a non function sensorWarning', function () {
+                const rover = new Rover(-5, -5);
+                rover.executeInstruction('F', null, 'not a function');
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it does nothing special if there is no sensorWarning (returns false)', function () {
+                const rover = new Rover(-5, -5);
+                const mockSensorWarning = () => false;
+                rover.executeInstruction('F', null, mockSensorWarning);
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it skips execution of instruction when there is a sensorWarning (returns true)', function () {
+                const rover = new Rover(-5, -5);
+                const mockSensorWarning = () => true;
+                rover.executeInstruction('F', null, mockSensorWarning);
+                expect(rover.toString()).to.equal('-5 -5 N');
             });
         });
     });
@@ -173,11 +208,56 @@ describe('Rover class', function() {
                 expect(rover.toString()).to.equal('-5 -4 N');
             });
 
-            it('it adds LOST to output if commsLink returns false', function () {
+            it('it does nothing special if comsLink is active (returns true)', function () {
+                const rover = new Rover(-5, -5);
+                const mockCommsLink = () => true;
+                rover.executeInstructions('FRL', mockCommsLink);
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it adds LOST to output if commsLink is down (returns false)', function () {
                 const rover = new Rover(0, 0);
                 const mockCommsLink = () => false;
                 rover.executeInstructions('FRL', mockCommsLink);
                 expect(rover.toString()).to.equal('0 1 N LOST');
+            });
+        });
+
+        describe('sensorWarning', function() {
+            it('it defaults to always false', function () {
+                const rover = new Rover(-5, -5);
+                rover.executeInstructions('FRL');
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it ignores a non function sensorWarning', function () {
+                const rover = new Rover(-5, -5);
+                rover.executeInstructions('FRL', null, 'not a function');
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it does nothing special if there is no sensorWarning (returns false)', function () {
+                const rover = new Rover(-5, -5);
+                const mockSensorWarning = () => false;
+                rover.executeInstructions('FRL', null, mockSensorWarning);
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it skips execution of instructions when there is a sensorWarning (returns true)', function () {
+                const rover = new Rover(-5, -5);
+                const mockSensorWarning = () => true;
+                rover.executeInstructions('FRL', null, mockSensorWarning);
+                expect(rover.toString()).to.equal('-5 -5 N');
+            });
+
+            it('it skips execution of some instructions, one out of the three instructions has a warning', function () {
+                const rover = new Rover(-5, -5);
+                let warning = true;
+                const mockSensorWarning = () => {
+                    return warning = !warning;
+                };
+                rover.executeInstructions('FFF', null, mockSensorWarning);
+                expect(rover.toString()).to.equal('-5 -3 N');
             });
         });
     });

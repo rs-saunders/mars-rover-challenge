@@ -51,8 +51,12 @@ class Rover {
         return privateProps.get(this).history;
     }
 
-    executeInstruction(instruction, commsLink = () => true) {
+    executeInstruction(instruction, commsLink, sensorWarning) {
         const {x, y, direction, history} = privateProps.get(this);
+
+        if(isFunction(sensorWarning) && sensorWarning()) {
+            return;
+        }
 
         history.unshift(`${this.toString()} ${instruction}`);
 
@@ -86,10 +90,10 @@ class Rover {
         }
     }
 
-    executeInstructions(instructions, commsLink = () => true) {
+    executeInstructions(instructions, commsLink, sensorWarning) {
         const numInstructions = instructions.length;
         for (let i = 0; i < numInstructions; i++) {
-            this.executeInstruction(instructions[i], commsLink);
+            this.executeInstruction(instructions[i], commsLink, sensorWarning);
         }
     }
 
