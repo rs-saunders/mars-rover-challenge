@@ -68,6 +68,13 @@ class Rover {
         }
     }
 
+    executeInstructions(instructions) {
+        const numInstructions = instructions.length;
+        for (let i = 0; i < numInstructions; i++) {
+            this.executeInstruction(instructions[i]);
+        }
+    }
+
     toString() {
         return `${this.x} ${this.y} ${this.direction}`;
     }

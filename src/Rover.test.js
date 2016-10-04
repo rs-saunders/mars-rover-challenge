@@ -118,4 +118,25 @@ describe('Rover class', function() {
             });
         });
     });
+
+    describe('executeInstructions', function() {
+
+        it('ignores unrecognised instructions', function () {
+            const rover = new Rover();
+            rover.executeInstructions('DANCE');
+            expect(rover.toString()).to.equal('0 0 N');
+        });
+
+        it('ignores unrecognised instructions between valid ones', function () {
+            const rover = new Rover();
+            rover.executeInstructions('FUN DANCE RAVE');
+            expect(rover.toString()).to.equal('0 1 E');
+        });
+
+        it('can execute multiple instructions', function() {
+            const rover = new Rover();
+            rover.executeInstructions('FFRFFLFFR');
+            expect(rover.toString()).to.equal('2 4 E');
+        });
+    });
 });
