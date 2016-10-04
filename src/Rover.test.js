@@ -117,6 +117,27 @@ describe('Rover class', function() {
                 expect(rover.toString()).to.equal('0 1 W');
             });
         });
+
+        describe('commsLink', function() {
+            it('it defaults to always true', function () {
+                const rover = new Rover(-5, -5);
+                rover.executeInstruction('F');
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it ignores a non function commsLink', function () {
+                const rover = new Rover(-5, -5);
+                rover.executeInstruction('F', 'not a function');
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it adds LOST to output if commsLink returns false', function () {
+                const rover = new Rover(-5, -5);
+                const mockCommsLink = () => false;
+                rover.executeInstruction('F', mockCommsLink);
+                expect(rover.toString()).to.equal('-5 -4 N LOST');
+            });
+        });
     });
 
     describe('executeInstructions', function() {
@@ -137,6 +158,27 @@ describe('Rover class', function() {
             const rover = new Rover();
             rover.executeInstructions('FFRFFLFFR');
             expect(rover.toString()).to.equal('2 4 E');
+        });
+
+        describe('commsLink', function() {
+            it('it defaults to always true', function () {
+                const rover = new Rover(-5, -5);
+                rover.executeInstructions('FRL');
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it ignores a non function commsLink', function () {
+                const rover = new Rover(-5, -5);
+                rover.executeInstructions('FRL', 'not a function');
+                expect(rover.toString()).to.equal('-5 -4 N');
+            });
+
+            it('it adds LOST to output if commsLink returns false', function () {
+                const rover = new Rover(0, 0);
+                const mockCommsLink = () => false;
+                rover.executeInstructions('FRL', mockCommsLink);
+                expect(rover.toString()).to.equal('0 1 N LOST');
+            });
         });
     });
 

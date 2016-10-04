@@ -1,3 +1,5 @@
+import isFunction from 'lodash/isFunction';
+
 const directions = 'NESW';
 const privateProps = new WeakMap();
 
@@ -24,7 +26,13 @@ class Rover {
             throw new Error(`${direction} is not a valid direction`);
         }
 
-        privateProps.set(this, { x, y, direction, history: [] });
+        privateProps.set(this, {
+            x,
+            y,
+            direction,
+            history: [],
+            lost: false
+        });
     }
 
     get x() {
@@ -43,7 +51,7 @@ class Rover {
         return privateProps.get(this).history;
     }
 
-    executeInstruction(instruction) {
+    executeInstruction(instruction, commsLink = () => true) {
         const {x, y, direction, history} = privateProps.get(this);
 
         history.unshift(`${this.toString()} ${instruction}`);
@@ -72,17 +80,23 @@ class Rover {
                 privateProps.get(this).x = x-1;
             }
         }
+
+        if(isFunction(commsLink) && !commsLink(this)) {
+            privateProps.get(this).lost = true;
+        }
     }
 
-    executeInstructions(instructions) {
+    executeInstructions(instructions, commsLink = () => true) {
         const numInstructions = instructions.length;
         for (let i = 0; i < numInstructions; i++) {
-            this.executeInstruction(instructions[i]);
+            this.executeInstruction(instructions[i], commsLink);
         }
     }
 
     toString() {
-        return `${this.x} ${this.y} ${this.direction}`;
+        const {lost} = privateProps.get(this);
+        const lostMessage = lost ? ' LOST' : '';
+        return `${this.x} ${this.y} ${this.direction}${lostMessage}`;
     }
 }
 

@@ -38,5 +38,8 @@
   "bugs": {
     "url": "https://github.com/rs-saunders/mars-rover-challenge/issues"
   },
-  "homepage": "https://github.com/rs-saunders/mars-rover-challenge#readme"
+  "homepage": "https://github.com/rs-saunders/mars-rover-challenge#readme",
+  "dependencies": {
+    "lodash": "^4.16.3"
+  }
 }
