@@ -139,4 +139,38 @@ describe('Rover class', function() {
             expect(rover.toString()).to.equal('2 4 E');
         });
     });
+
+    describe('history', function() {
+
+        it('no history for new rover', function () {
+            const rover = new Rover();
+            expect(rover.history.length).to.equal(0);
+        });
+
+        it('tracks history of an instruction', function() {
+            const rover = new Rover();
+            rover.executeInstruction('F');
+            expect(rover.history.length).to.equal(1);
+            expect(rover.history).to.deep.equal(['0 0 N F']);
+            expect(rover.toString()).to.equal('0 1 N');
+        });
+
+        it('tracks history of multiple instructions', function() {
+            const rover = new Rover();
+            rover.executeInstructions('FFRFFLFFR');
+            expect(rover.history.length).to.equal(9);
+            expect(rover.history).to.deep.equal([
+                '2 4 N R',
+                '2 3 N F',
+                '2 2 N F',
+                '2 2 E L',
+                '1 2 E F',
+                '0 2 E F',
+                '0 2 N R',
+                '0 1 N F',
+                '0 0 N F'
+            ]);
+            expect(rover.toString()).to.equal('2 4 E');
+        });
+    });
 });

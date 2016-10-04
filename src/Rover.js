@@ -24,7 +24,7 @@ class Rover {
             throw new Error(`${direction} is not a valid direction`);
         }
 
-        privateProps.set(this, { x, y, direction });
+        privateProps.set(this, { x, y, direction, history: [] });
     }
 
     get x() {
@@ -39,8 +39,14 @@ class Rover {
         return privateProps.get(this).direction;
     }
 
+    get history() {
+        return privateProps.get(this).history;
+    }
+
     executeInstruction(instruction) {
-        const {x, y, direction} = privateProps.get(this);
+        const {x, y, direction, history} = privateProps.get(this);
+
+        history.unshift(`${this.toString()} ${instruction}`);
 
         switch(instruction) {
         case 'L':
